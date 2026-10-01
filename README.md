@@ -1,4 +1,3 @@
-===FILE:README.md===
 # Repso — Web-App Fitness Tracker & Workout Generator
 
 Repso adalah web-app fitness berbasis browser modern yang dirancang khusus untuk member gym dan casual lifter di Indonesia. Membantu menyusun jadwal latihan harian secara instan berdasarkan alat gym yang tersedia dan melacak progres set & reps tanpa ribet langganan bulanan dollar.
@@ -15,4 +14,3 @@ Repso adalah web-app fitness berbasis browser modern yang dirancang khusus untuk
 1. Buat repository baru di GitHub.
 2. Upload seluruh file ke repository tersebut.
 3. Import project ke Vercel dan klik **Deploy**.
-===FILE:README.md===
