@@ -1,0 +1,67 @@
+===FILE:jalan-lokal.html===
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cara Jalanin Repso Lokal - Leveling Digital</title>
+    <style>
+        :root {
+            --bg-dark: #12141A;
+            --card-bg: #1E222D;
+            --accent-orange: #FF5500;
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+        }
+        h1 { color: var(--accent-orange); font-size: 26px; }
+        p, li { color: var(--text-secondary); font-size: 14px; }
+        strong { color: var(--text-primary); }
+        .code-block {
+            background: #12141A;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #00E5FF;
+            margin: 12px 0;
+            border: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💻 Cara Menjalankan Repso di Komputer Lokal</h1>
+        <p>Sebelum disebar atau di-deploy ke Vercel, pastikan tool Repso bisa lu buka langsung di komputer lu sendiri.</p>
+        
+        <h3>Metode Paling Gampang (Static HTML/CSS/JS):</h3>
+        <ol>
+            <li>Buka folder tempat lu nyimpen file Repso.</li>
+            <li>Cari file bernama <strong>index.html</strong>.</li>
+            <li>Klik dua kali (double click) file <code>index.html</code> tersebut. File akan otomatis terbuka di browser Chrome, Safari, atau Edge lu.</li>
+            <li>Coba uji coba generator jadwal fitness dan log tracker-nya untuk memastikan semua tombol dan tampilan berjalan mulus.</li>
+        </ol>
+
+        <h3>Metode Alternatif (Pakai Terminal / VS Code):</h3>
+        <p>Kalau lu pakai Visual Studio Code, lu bisainstall extension <strong>Live Server</strong> atau jalankan perintah ringan di terminal:</p>
+        <div class="code-block">npx serve</div>
+        <p>Lalu buka alamat <code>http://localhost:3000</code> di browser lu.</p>
+    </div>
+</body>
+</html>
+===FILE:jalan-lokal.html===

@@ -1,0 +1,13 @@
+===FILE:vercel.json===
+{
+  "version": 2,
+  "name": "repso",
+  "builds": [],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
+===FILE:vercel.json===

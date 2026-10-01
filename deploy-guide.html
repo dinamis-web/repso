@@ -1,0 +1,158 @@
+===FILE:deploy-guide.html===
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Deploy Repso - Leveling Digital</title>
+    <style>
+        :root {
+            --bg-dark: #12141A;
+            --card-bg: #1E222D;
+            --accent-orange: #FF5500;
+            --accent-orange-hover: #FF7A00;
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --green: #00E676;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', Inter, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 0 24px rgba(255, 85, 0, 0.15);
+        }
+        h1 {
+            color: var(--accent-orange);
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            font-size: 15px;
+        }
+        .step-box {
+            background: rgba(18, 20, 26, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .step-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .step-num {
+            background: var(--accent-orange);
+            color: white;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 14px;
+        }
+        p, li {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        strong {
+            color: var(--text-primary);
+        }
+        ul {
+            padding-left: 20px;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF5500 0%, #FF7A00 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 12px;
+            box-shadow: 0 0 20px rgba(255, 85, 0, 0.4);
+        }
+        .badge {
+            background: rgba(0, 230, 118, 0.12);
+            color: var(--green);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            border: 1px solid rgba(0, 230, 118, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Panduan Deploy Repso (Web-App Fitness)</h1>
+        <p class="subtitle">Ikuti langkah-langkah di bawah ini untuk menjalankan Repso di komputer lokal lalu publish ke internet pakai akun Vercel & GitHub lu sendiri.</p>
+
+        <div class="step-box">
+            <div class="step-title"><span class="step-num">0</span> Jalanin Lokal Dulu (Local-First) <span class="badge">Wajib</span></div>
+            <p>Sebelum online, pastikan tool Repso berfungsi normal di laptop/PC lu:</p>
+            <ul>
+                <li>Simpan file web-app Repso dalam satu folder khusus (misal: <code>repso-app</code>).</li>
+                <li>Buka file <code>jalan-lokal.html</code> di folder tersebut atau klik 2 kali file <code>index.html</code> utama untuk langsung mencobanya di browser.</li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <div class="step-title"><span class="step-num">1</span> Siapkan Akun Gratis</div>
+            <p>Lu butuh 2 akun gratis untuk menempatkan source code dan hosting web-app:</p>
+            <ul>
+                <li><strong>GitHub.com:</strong> Tempat nyimpen file web-app lu secara aman dan privat/publik (100% milik lu).</li>
+                <li><strong>Vercel.com:</strong> Tempat naruh hosting web-app biar bisa diakses lewat internet secara gratis dengan domain <code>.vercel.app</code>.</li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <div class="step-title"><span class="step-num">2</span> Upload ke GitHub Lu</div>
+            <p>Biar Vercel bisa baca web-app Repso, masukkan kodenya ke GitHub:</p>
+            <ul>
+                <li>Bikin repository baru di GitHub (misal nama: <code>repso</code>).</li>
+                <li>Upload file-file web-app Repso (termasuk <code>index.html</code> dan file config <code>vercel.json</code>) ke repository tersebut via web upload GitHub atau aplikasi GitHub Desktop.</li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <div class="step-title"><span class="step-num">3</span> Hubungkan ke Vercel & Deploy 1-Klik</div>
+            <p>Deploy web-app biar langsung online:</p>
+            <ul>
+                <li>Login ke dashboard <a href="https://vercel.com" target="_blank" style="color: var(--accent-orange);">Vercel.com</a> pakai akun GitHub lu.</li>
+                <li>Klik <strong>Add New...</strong> -> <strong>Project</strong>, lalu pilih repository <code>repso</code> yang baru lu bikin.</li>
+                <li>Biarkan settingan build otomatis (karena ini Static HTML/CSS/JS), langsung klik <strong>Deploy</strong>.</li>
+                <li>Tunggu 10 detik, dan... Selesai! Lu bakal dapet link gratis seperti <code>repso.vercel.app</code>.</li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <div class="step-title"><span class="step-num">4</span> Sambungin ke Sistem Penjualan (Scalev)</div>
+            <p>Karena Repso adalah produk web-app tool siap jual:</p>
+            <ul>
+                <li>Pasang link checkout Scalev di tombol pembelian landing page.</li>
+                <li>Begitu pembeli sukses checkout, sistem otomatis mengirimkan akses link web-app Repso ke pembeli tanpa ribet kirim manual.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+===FILE:deploy-guide.html===
