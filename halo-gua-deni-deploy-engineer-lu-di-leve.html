@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repso - Fitness Workout Generator & Tracker + Deni Deploy Hub</title>
+    <style>
+        :root {
+            --bg-dark: #12141A;
+            --card-bg: #1E222D;
+            --card-bg-hover: #262B3A;
+            --accent-orange: #FF5500;
+            --accent-orange-hover: #FF7A00;
+            --text-primary: #FFFFFF;
+            --text-secondary: #94A3B8;
+            --green: #00E676;
+            --border: rgba(255, 255, 255, 0.08);
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding-bottom: 90px; /* Ruang untuk bottom bar */
+        }
+
+        header {
+            background: linear-gradient(180deg, #1A1E29 0%, #12141A 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 16px 16px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        header h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent-orange);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        header p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .main-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.25s ease-in-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        select, input {
+            width: 100%;
+            background: #12141A;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 14px;
+            color: var(--text-primary);
+            font-size: 14px;
+            margin-bottom: 16px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--accent-orange);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-orange-hover) 100%);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(255, 85, 0, 0.3);
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            box-shadow: none;
+            margin-top: 8px;
+        }
+
+        .workout-day-card {
+            background: #12141A;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .workout-day-card h4 {
+            color: var(--accent-orange);
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .exercise-item {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 4px 0;
+            border-bottom: 1px dashed rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .exercise-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Tracker styling */
+        .tracker-row {
+            display: grid;
+            grid-template-columns: 1fr 80px 80px 40px;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 10px;
+            background: #12141A;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .tracker-row input {
+            margin-bottom: 0;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .tracker-header {
+            display: grid;
+            grid-template-columns: 1fr 80px 80px 40px;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: bold;
+            margin-bottom: 6px;
+            padding: 0 10px;
+            text-transform: uppercase;
+        }
+
+        .badge {
+            background: rgba(0, 230, 118, 0.12);
+            color: var(--green);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            display: inline-block;
+        }
+
+        /* File Bundle Accordion */
+        .bundle-file {
+            background: #12141A;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .bundle-header {
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .bundle-header:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .bundle-content {
+            display: none;
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-secondary);
+            background: #0D0F14;
+        }
+
+        .bundle-content.show {
+            display: block;
+        }
+
+        pre {
+            background: #12141A;
+            padding: 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #00E5FF;
+            margin-top: 8px;
+            border: 1px solid var(--border);
+            white-space: pre-wrap;
+        }
+
+        /* Bottom Tab Bar */
+        nav {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(18, 20, 26, 0.95);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 4px;
+            padding-bottom: calc(8px + env(safe-area-inset-bottom));
+            z-index: 1000;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            padding: 4px 0;
+            transition: color 0.2s;
+        }
+
+        .nav-item .icon {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+
+        .nav-item.active {
+            color: var(--accent-orange);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🏋️ Repso <span class="badge">v2.5</span></h1>
+        <p>Fitness Workout Generator & Tracker + Deni Deploy Hub</p>
+    </header>
+
+    <div class="main-container">
+
+        <!-- TAB 1: GENERATOR -->
+        <section id="tab-generator" class="section active">
+            <h2>⚡ Generator Jadwal Fitness</h2>
+            <div class="card">
+                <label for="goal">🎯 Target Utama</label>
+                <select id="goal">
+                    <option value="hypertrophy">Membentuk Otot (Hypertrophy)</option>
+                    <option value="strength">Kekuatan Maksimal (Strength)</option>
+                    <option value="fatloss">Turunkan Berat Badan / Bakar Lemak</option>
+                </select>
+
+                <label for="split">📅 Frekuensi Latihan (Split)</label>
+                <select id="split">
+                    <option value="3">3 Hari / Minggu (Full Body / PPL)</option>
+                    <option value="4">4 Hari / Minggu (Upper / Lower)</option>
+                    <option value="5">5 Hari / Minggu (Bro Split / PPL + UL)</option>
+                </select>
+
+                <label for="level">💪 Level Pengalaman</label>
+                <select id="level">
+                    <option value="beginner">Pemula (Baru Mulai / < 6 Bulan)</option>
+                    <option value="intermediate">Menengah (6 Bulan - 2 Tahun)</option>
+                    <option value="advanced">Lanjutan (> 2 Tahun Konsisten)</option>
+                </select>
+
+                <button class="btn" onclick="generateSchedule()">Buat Jadwal Latihan 🚀</button>
+            </div>
+
+            <div id="schedule-result"></div>
+        </section>
+
+        <!-- TAB 2: TRACKER -->
+        <section id="tab-tracker" class="section">
+            <h2>📈 Pelacak Latihan (Workout Log)</h2>
+            <div class="card">
+                <label for="exercise-name">Nama Gerakan / Latihan</label>
+                <input type="text" id="exercise-name" placeholder="Contoh: Barbell Bench Press">
+
+                <div class="tracker-header">
+                    <span>Set</span>
+                    <span>Beban (Kg)</span>
+                    <span>Repetisi</span>
+                    <span></span>
+                </div>
+
+                <div id="tracker-sets-container">
+                    <div class="tracker-row">
+                        <input type="text" value="Set 1" readonly style="background: rgba(255,255,255,0.02)">
+                        <input type="number" class="set-weight" placeholder="0" value="50">
+                        <input type="number" class="set-reps" placeholder="0" value="10">
+                        <span style="text-align: center; color: var(--green);">✓</span>
+                    </div>
+                    <div class="tracker-row">
+                        <input type="text" value="Set 2" readonly style="background: rgba(255,255,255,0.02)">
+                        <input type="number" class="set-weight" placeholder="0" value="52.5">
+                        <input type="number" class="set-reps" placeholder="0" value="8">
+                        <span style="text-align: center; color: var(--green);">✓</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary" onclick="addSetRow()">+ Tambah Set</button>
+                <div style="margin-top: 16px;">
+                    <button class="btn" onclick="saveWorkoutLog()">Simpan Sesi Latihan 💾</button>
+                </div>
+            </div>
+
+            <h2>📜 Riwayat Latihan</h2>
+            <div id="history-container"></div>
+        </section>
+
+        <!-- TAB 3: DENI DEPLOY HUB -->
+        <section id="tab-deploy" class="section">
+            <h2>🛠️ Deni Deploy Hub</h2>
+            <div class="card" style="border-color: var(--accent-orange);">
+                <h3 style="color: var(--accent-orange); font-size: 16px; margin-bottom: 8px;">Halo, Gua Deni! 👋</h3>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 14px;">
+                    Deploy engineer lu di Leveling Digital. Mau nurunin web-app Repso ini ke internet pakai akun lu sendiri? Pilih file panduan atau konfigurasi di bawah ini!
+                </p>
+                <button class="btn" onclick="alert('Semua file siap didownload atau disalin langsung dari daftar di bawah!')">Status: Local-First Ready 🟢</button>
+            </div>
+
+            <div class="bundle-file">
+                <div class="bundle-header" onclick="toggleBundle('file-1')">
+                    <span>📄 1. deploy-guide.html</span>
+                    <span style="font-size: 12px; color: var(--text-secondary);">Buka ▾</span>
+                </div>
+                <div class="bundle-content" id="file-1">
+                    <p>Panduan lengkap langkah demi langkah dari nol sampai online di Vercel.</p>
+                    <pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="id"&gt;
+&lt;head&gt;&lt;meta charset="UTF-8"&gt;&lt;title&gt;Panduan Deploy Repso&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;🚀 Panduan Deploy Repso&lt;/h1&gt;
+    &lt;p&gt;1. Siapkan akun GitHub & Vercel.&lt;/p&gt;
+    &lt;p&gt;2. Upload file ke repository GitHub.&lt;/p&gt;
+    &lt;p&gt;3. Import ke Vercel & Deploy!&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+                </div>
+            </div>
+
+            <div class="bundle-file">
+                <div class="bundle-header" onclick="toggleBundle('file-2')">
+                    <span>💻 2. jalan-lokal.html</span>
+                    <span style="font-size: 12px; color: var(--text-secondary);">Buka ▾</span>
+                </div>
+                <div class="bundle-content" id="file-2">
+                    <p>Cara super gampang jalanin web-app di komputer lokal lu sebelum di-publish.</p>
+                    <pre>1. Simpan file index.html dalam 1 folder khusus.
+2. Klik 2 kali file index.html atau jalankan di terminal:
+npx serve
+3. Buka http://localhost:3000 di browser.</pre>
+                </div>
+            </div>
+
+            <div class="bundle-file">
+                <div class="bundle-header" onclick="toggleBundle('file-3')">
+                    <span>🔒 3. kenapa-github-sendiri.html</span>
+                    <span style="font-size: 12px; color: var(--text-secondary);">Buka ▾</span>
+                </div>
+                <div class="bundle-content" id="file-3">
+                    <p>Alasan kenapa wajib pakai GitHub & akun sendiri demi keamanan & kepemilikan 100%.</p>
+                    <pre>- Kepemilikan Penuh (100% Milik Lu)
+- Keamanan Terjaga (Tanpa bagi password)
+- Kontrol Update & Fleksibilitas Tinggi</pre>
+                </div>
+            </div>
+
+            <div class="bundle-file">
+                <div class="bundle-header" onclick="toggleBundle('file-4')">
+                    <span>⚙️ 4. vercel.json</span>
+                    <span style="font-size: 12px; color: var(--text-secondary);">Buka ▾</span>
+                </div>
+                <div class="bundle-content" id="file-4">
+                    <p>Konfigurasi deploy Vercel khusus untuk static web-app Repso.</p>
+                    <pre>{
+  "version": 2,
+  "name": "repso",
+  "builds": [],
+  "routes": [
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}</pre>
+                </div>
+            </div>
+
+            <div class="bundle-file">
+                <div class="bundle-header" onclick="toggleBundle('file-5')">
+                    <span>📑 5. README.md</span>
+                    <span style="font-size: 12px; color: var(--text-secondary);">Buka ▾</span>
+                </div>
+                <div class="bundle-content" id="file-5">
+                    <p>Dokumentasi rapi untuk repository GitHub lu.</p>
+                    <pre># Repso — Web-App Fitness Tracker
+Repso adalah web-app fitness berbasis browser modern untuk member gym.</pre>
+                </div>
+            </div>
+
+            <div class="bundle-file">
+                <div class="bundle-header" onclick="toggleBundle('file-6')">
+                    <span>🌐 6. domain-setup.html</span>
+                    <span style="font-size: 12px; color: var(--text-secondary);">Buka ▾</span>
+                </div>
+                <div class="bundle-content" id="file-6">
+                    <p>Panduan pasang domain murah (.com / .my.id) untuk branding jangka panjang.</p>
+                    <pre>1. Beli domain di provider lokal (Hostinger/Niagahoster).
+2. Masuk Vercel Settings -> Domains -> Masukkan nama domain.
+3. Atur DNS Records sesuai instruksi Vercel.</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: PANDUAN & TENTANG -->
+        <section id="tab-about" class="section">
+            <h2>📖 Panduan & Tentang Repso</h2>
+            <div class="card">
+                <h3 style="font-size: 15px; color: var(--accent-orange); margin-bottom: 6px;">Cara Pakai Repso</h3>
+                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 14px;">
+                    1. Buka tab <strong>Generator</strong> untuk merancang jadwal latihan mingguan sesuai target lu.<br>
+                    2. Gunakan tab <strong>Tracker</strong> setiap kali latihan di gym untuk mencatat beban & repetisi.<br>
+                    3. Data tersimpan otomatis di browser menggunakan Local-First Storage.
+                </p>
+
+                <h3 style="font-size: 15px; color: var(--accent-orange); margin-bottom: 6px; margin-top: 16px;">Tentang Leveling Digital</h3>
+                <p style="font-size: 13px; color: var(--text-secondary);">
+                    Repso dikembangkan sebagai bagian dari ekosistem web-app siap-jual Leveling Digital. Dirancang agar non-coder dapat memiliki, menjalankan, dan mendaur ulang aplikasi web canggih secara mandiri.
+                </p>
+            </div>
+            <div style="text-align: center; font-size: 12px; color: var(--text-secondary); margin-top: 24px;">
+                Repso v2.5 • Powered by Leveling Digital & Deni Deploy Engineer 🚀
+            </div>
+        </section>
+
+    </div>
+
+    <!-- BOTTOM TAB BAR -->
+    <nav>
+        <button class="nav-item active" onclick="switchTab('generator', this)">
+            <span class="icon">⚡</span>
+            <span>Generator</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('tracker', this)">
+            <span class="icon">📈</span>
+            <span>Tracker</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('deploy', this)">
+            <span class="icon">🛠️</span>
+            <span>Deni Hub</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('about', this)">
+            <span class="icon">📖</span>
+            <span>Tentang</span>
+        </button>
+    </nav>
+
+    <script>
+        // Tab Switching Logic
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById('tab-' + tabId).classList.add('active');
+            btnElement.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Toggle Bundle File Accordion
+        function toggleBundle(fileId) {
+            const el = document.getElementById(fileId);
+            el.classList.toggle('show');
+        }
+
+        // Generator Logic
+        function generateSchedule() {
+            const goal = document.getElementById('goal').value;
+            const split = document.getElementById('split').value;
+            const level = document.getElementById('level').value;
+
+            let scheduleHTML = `<div class="card" style="margin-top: 16px;"><h3>🎯 Hasil Jadwal: ${split} Hari / Minggu</h3><p style="font-size:13px; color:var(--text-secondary); margin-bottom:12px;">Disesuaikan untuk target ${goal.toUpperCase()} (${level})</p>`;
+
+            let daysData = [];
+            if (split === "3") {
+                daysData = [
+                    { day: "Hari 1: Full Body A", exercises: ["Barbell Squat: 3 Set x 8-10 Reps", "Bench Press: 3 Set x 8-10 Reps", "Lat Pulldown: 3 Set x 10-12 Reps", "Plank: 3 Set x 45 Detik"] },
+                    { day: "Hari 2: Full Body B", exercises: ["Romanian Deadlift: 3 Set x 8-10 Reps", "Overhead Press: 3 Set x 8-10 Reps", "Barbell Row: 3 Set x 10-12 Reps", "Bicep Curl: 3 Set x 12 Reps"] },
+                    { day: "Hari 3: Full Body C", exercises: ["Leg Press: 3 Set x 10-12 Reps", "Incline Dumbbell Press: 3 Set x 10 Reps", "Seated Cable Row: 3 Set x 10-12 Reps", "Tricep Pushdown: 3 Set x 12 Reps"] }
+                ];
+            } else if (split === "4") {
+                daysData = [
+                    { day: "Hari 1: Upper A", exercises: ["Bench Press: 4 Set x 6-8 Reps", "Barbell Row: 4 Set x 6-8 Reps", "Overhead Press: 3 Set x 8-10 Reps", "Pull-up: 3 Set x Max"] },
+                    { day: "Hari 2: Lower A", exercises: ["Barbell Squat: 4 Set x 6-8 Reps", "Romanian Deadlift: 4 Set x 8-10 Reps", "Leg Extension: 3 Set x 12 Reps", "Calf Raise: 4 Set x 15 Reps"] },
+                    { day: "Hari 3: Upper B", exercises: ["Incline Dumbbell Press: 4 Set x 8-10 Reps", "Lat Pulldown: 4 Set x 10-12 Reps", "Lateral Raise: 4 Set x 15 Reps", "Bicep & Tricep Superset: 3 Set"] },
+                    { day: "Hari 4: Lower B", exercises: ["Deadlift: 3 Set x 5 Reps", "Bulgarian Split Squat: 3 Set x 10 Reps / kaki", "Hamstring Curl: 3 Set x 12 Reps", "Hanging Leg Raise: 3 Set x 12 Reps"] }
+                ];
+            } else {
+                daysData = [
+                    { day: "Hari 1: Push (Chest, Shoulder, Tricep)", exercises: ["Bench Press: 4 Set x 8 Reps", "Incline Dumbbell Press: 3 Set x 10 Reps", "Lateral Raise: 4 Set x 12 Reps", "Tricep Extension: 3 Set x 12 Reps"] },
+                    { day: "Hari 2: Pull (Back, Bicep)", exercises: ["Deadlift / Barbell Row: 4 Set x 6-8 Reps", "Lat Pulldown: 3 Set x 10 Reps", "Face Pull: 3 Set x 15 Reps", "Barbell Bicep Curl: 3 Set x 12 Reps"] },
+                    { day: "Hari 3: Legs", exercises: ["Squat: 4 Set x 8 Reps", "Leg Press: 3 Set x 10 Reps", "Leg Curl: 3 Set x 12 Reps", "Calf Raise: 4 Set x 15 Reps"] },
+                    { day: "Hari 4: Upper Body", exercises: ["Overhead Press: 4 Set x 8 Reps", "T-Bar Row: 3 Set x 10 Reps", "Dumbbell Press: 3 Set x 10 Reps", "Arm Superset: 3 Set"] },
+                    { day: "Hari 5: Lower Body & Core", exercises: ["Romanian Deadlift: 4 Set x 10 Reps", "Bulgarian Split Squat: 3 Set x 10 Reps", "Plank & Crunch: 3 Set"] }
+                ];
+            }
+
+            daysData.forEach(d => {
+                scheduleHTML += `<div class="workout-day-card"><h4>${d.day}</h4>`;
+                d.exercises.forEach(ex => {
+                    scheduleHTML += `<div class="exercise-item"><span>${ex.split(':')[0]}</span><span style="color:var(--text-primary);">${ex.split(':')[1] || ''}</span></div>`;
+                });
+                scheduleHTML += `</div>`;
+            });
+
+            scheduleHTML += `</div>`;
+            document.getElementById('schedule-result').innerHTML = scheduleHTML;
+        }
+
+        // Tracker Logic
+        function addSetRow() {
+            const container = document.getElementById('tracker-sets-container');
+            const count = container.children.length + 1;
+            const row = document.createElement('div');
+            row.className = 'tracker-row';
+            row.innerHTML = `
+                <input type="text" value="Set ${count}" readonly style="background: rgba(255,255,255,0.02)">
+                <input type="number" class="set-weight" placeholder="0" value="50">
+                <input type="number" class="set-reps" placeholder="0" value="10">
+                <span style="text-align: center; color: var(--green);">✓</span>
+            `;
+            container.appendChild(row);
+        }
+
+        function saveWorkoutLog() {
+            const exerciseName = document.getElementById('exercise-name').value || "Latihan Gym";
+            const weights = document.querySelectorAll('.set-weight');
+            const reps = document.querySelectorAll('.set-reps');
+            
+            let setsSummary = [];
+            for(let i=0; i<weights.length; i++) {
+                if(weights[i].value && reps[i].value) {
+                    setsSummary.push(`Set ${i+1}: ${weights[i].value}kg × ${reps[i].value} reps`);
+                }
+            }
+
+            if(setsSummary.length === 0) {
+                alert('Mohon isi minimal satu set latihan!');
+                return;
+            }
+
+            const logItem = {
+                date: new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }),
+                name: exerciseName,
+                summary: setsSummary.join(' | ')
+            };
+
+            try {
+                let history = JSON.parse(localStorage.getItem('repso_history') || '[]');
+                history.unshift(logItem);
+                localStorage.setItem('repso_history', JSON.stringify(history));
+                loadWorkoutHistory();
+                alert('Sesi latihan berhasil disimpan! 🚀');
+            } catch(e) {
+                alert('Gagal menyimpan ke penyimpanan lokal.');
+            }
+        }
+
+        function loadWorkoutHistory() {
+            const container = document.getElementById('history-container');
+            try {
+                const history = JSON.parse(localStorage.getItem('repso_history') || '[]');
+                if(history.length === 0) {
+                    container.innerHTML = `<div class="empty-state">Belum ada riwayat latihan tersimpan. Yuk mulai latihan hari ini!</div>`;
+                    return;
+                }
+                
+                let html = '';
+                history.forEach(item => {
+                    html += `<div class="card" style="margin-bottom: 10px; padding: 14px;">
+                        <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 4px;">${item.date}</div>
+                        <div style="font-weight: 700; font-size: 15px; color: var(--accent-orange); margin-bottom: 6px;">${item.name}</div>
+                        <div style="font-size: 13px; color: var(--text-primary);">${item.summary}</div>
+                    </div>`;
+                });
+                container.innerHTML = html;
+            } catch(e) {
+                container.innerHTML = `<div class="empty-state">Gagal memuat riwayat.</div>`;
+            }
+        }
+
+        // Inisialisasi awal saat load
+        window.onload = function() {
+            generateSchedule();
+            loadWorkoutHistory();
+        };
+    </script>
+</body>
+</html>
